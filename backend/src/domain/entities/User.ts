@@ -1,14 +1,15 @@
 import {
-  AfterLoad,
-  BeforeInsert,
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  Column,
   UpdateDateColumn,
+  CreateDateColumn,
+  DeleteDateColumn,
+  JoinColumn,
+  OneToMany,
 } from "typeorm";
-import * as bcrypt from "bcrypt";
+import { SessionEntity } from "./Sessions";
+import { LoginHistoryEntity } from "./LoginHistory";
 
 @Entity({
   name: "users",
@@ -26,41 +27,33 @@ export class UserEntity {
   @Column({ name: "last_name", type: "varchar", length: 100, nullable: true })
   lastName?: string;
 
-  fullName?: string;
-  @AfterLoad()
-  async setFullName?() {
-    if (this.firstName && this.lastName) {
-      this.fullName = `${this.firstName} ${this.lastName}`;
-    } else {
-      this.fullName = this.firstName || this.lastName;
-    }
-  }
-
   @Column({ name: "email", type: "varchar", length: 100, unique: true })
-  email: string;
+  email?: string;
+
+  @Column({ name: "password", type: "varchar", length: 100 })
+  password?: string;
 
   @Column({
-    name: "password",
+    name: "identification",
     type: "varchar",
-    length: 150,
-    nullable: true,
+    length: 100,
+    unique: true,
   })
-  password: string;
+  identification?: string;
 
-  @Column({ name: "is_password_reset", type: "boolean", default: false })
-  isPasswordReset?: boolean;
+  // column for failed attempts to login
+  @Column({ name: "failed_attempts", type: "int", default: 0 })
+  failedAttempts?: number;
 
-  @Column({ name: "signature", type: "varchar", length: 255, nullable: true })
-  signature?: string;
-
-  @Column({ name: "is_active", type: "boolean", default: true })
-  isActive?: boolean;
-
-  @Column({ name: "role", type: "varchar", length: 50, default: "user" })
-  role?: string;
-
-  @Column({ name: "phone", type: "varchar", length: 100, default: "" })
-  phone?: string;
+  // column for status of the user to check if is blocked for trying to login more than 3 times, either active or blocked
+  @Column({
+    name: "status",
+    type: "varchar",
+    length: 10,
+    default: "active",
+    enum: ["active", "blocked"],
+  })
+  status?: string;
 
   @CreateDateColumn({
     name: "created_at",
@@ -82,21 +75,22 @@ export class UserEntity {
   })
   deletedAt?: Date;
 
+  // column for user's role either admin or user
   @Column({
-    name: "profile_image_key",
+    name: "role",
     type: "varchar",
-    length: 255,
-    nullable: true,
+    length: 10,
+    default: "user",
+    enum: ["user", "admin"],
   })
-  profileImageKey?: string;
+  role?: string;
 
-  profileImageUrl?: string;
+  // relationships
+  @OneToMany("SessionEntity", (session: SessionEntity) => session.user)
+  @JoinColumn({ name: "id" })
+  session?: SessionEntity;
 
-  @BeforeInsert()
-  async checkData?() {
-    const salt = await bcrypt.genSalt(10);
-    if (this.password) {
-      this.password = await bcrypt.hash(this.password, salt);
-    }
-  }
+  @OneToMany("LoginHistoryEntity", (loginHistory: LoginHistoryEntity) => loginHistory.user)
+  @JoinColumn({ name: "id" })
+  loginHistory?: LoginHistoryEntity;
 }

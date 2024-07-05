@@ -1,0 +1,22 @@
+meta {
+  name: get user login history
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/login-history/2
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{TOKEN}}
+}
+
+body:json {
+  {
+    "username": "Macluiggy1",
+    "password": "E123456$"
+  }
+}

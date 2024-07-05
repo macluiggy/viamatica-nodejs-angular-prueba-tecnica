@@ -12,10 +12,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 })
 export class RegisterComponent {
   form = {
-    email: '',
     password: '',
     username: '',
-    fullName: '',
+    firstName: '',
+    lastName: '',
+    identification: '',
   };
   isSuccessful = false;
   isSignUpFailed = false;

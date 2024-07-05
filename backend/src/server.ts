@@ -4,6 +4,7 @@ import { AppDataSource } from "./infrastructure/database/data-source";
 import { API_VERSION } from "./config/constants";
 import userRoutes from "./infrastructure/routes/UserRoutes";
 import authRoutes from "./infrastructure/routes/AuthRoutes";
+import loginHistoryRoutes from "./infrastructure/routes/LoginHistoryRoutes";
 import { errorHandler } from "./infrastructure/middleware/errorHandler";
 import { responseHandler } from "./infrastructure/middleware/responseHandler";
 import cors from "cors";
@@ -36,6 +37,7 @@ app.use(passport.initialize());
     // add api/v1 prefix to all routes
     app.use(`/api/${API_VERSION}`, userRoutes);
     app.use(`/api/${API_VERSION}`, authRoutes);
+    app.use(`/api/${API_VERSION}`, loginHistoryRoutes);
     app.use(errorHandler);
 
     app.listen(3000, () => {

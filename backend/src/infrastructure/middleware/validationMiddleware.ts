@@ -10,7 +10,10 @@ export function validationMiddleware<T>(
 ): RequestHandler {
   return (req: Request, res: Response, next: NextFunction): void => {
     const dto = plainToInstance<T, T>(type, req.body);
-    validate(dto).then((errors: ValidationError[]) => {
+    validate(dto, {
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }).then((errors: ValidationError[]) => {
       if (errors.length > 0) {
         const message = errors
           .map((error: ValidationError) => Object.values(error.constraints!))

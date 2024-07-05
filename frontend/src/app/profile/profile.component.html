@@ -9,12 +9,25 @@
     <strong>Email:</strong>
     {{ currentUser.email }}
   </p>
-  <strong>Roles:</strong>
+  <p>
+    <strong>First Name</strong>
+    {{ currentUser.firstName }}
+  </p>
+  <p>
+    <strong>Last Name</strong>
+    {{ currentUser.lastName }}
+  </p>
+  <p>
+    <strong>Identification Number</strong>
+    {{ currentUser.identification }}
+  </p>
+    
+  <!-- <strong>Roles:</strong>
   <ul>
     @for (role of currentUser.roles; track role) {
     <li>{{ role }}</li>
     }
-  </ul>
+  </ul> -->
 </div>
 } @else {
 <p>Please login.</p>

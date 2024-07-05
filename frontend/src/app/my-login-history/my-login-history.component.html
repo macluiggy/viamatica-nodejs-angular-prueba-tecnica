@@ -1,0 +1,18 @@
+<table class="table table-striped table-bordered">
+  <thead class="thead-dark">
+    <tr>
+      <th>User</th>
+      <th>Action</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (login of loginHistory; track $index) {
+      <tr>
+        <td>{{ login.user.firstName }}</td>
+        <td>{{ login.action }}</td>
+        <td>{{ login.createdAt | date: 'medium' }}</td>
+      </tr>
+    }
+  </tbody>
+</table>

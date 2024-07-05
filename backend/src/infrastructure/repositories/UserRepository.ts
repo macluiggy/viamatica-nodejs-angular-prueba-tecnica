@@ -39,4 +39,25 @@ export class UserRepository {
       },
     });
   }
+
+  async findByUsername(username: string): Promise<UserEntity | null> {
+    return this.userRepository.findOne({
+      where: {
+        username,
+      },
+    });
+  }
+
+  async findByEmailOrUsername(email: string, username: string): Promise<UserEntity | null> {
+    return this.userRepository.findOne({
+      where: [
+        {
+          email,
+        },
+        {
+          username,
+        },
+      ],
+    });
+  }
 }

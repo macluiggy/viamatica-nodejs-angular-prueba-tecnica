@@ -21,8 +21,8 @@ export class AuthController {
 
   async login(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { email, password } = req.body;
-      const result = await this.authService.login(email, password);
+      const { email, username, password } = req.body;
+      const result = await this.authService.login({ email, password, username });
       res.success({
         message: "User logged in successfully",
         data: result,
@@ -34,6 +34,10 @@ export class AuthController {
 
   async logout(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
+      const userid = req.user?.['id']
+      
+      await this.authService.logout(userid);
+
       res.success({
         message: "User logged out successfully",
       });

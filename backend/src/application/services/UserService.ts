@@ -30,4 +30,8 @@ export class UserService implements IUserService {
   async getUserByEmail(email: string): Promise<UserEntity | null> {
     return this.userRepository.findByEmail(email);
   }
+
+  getUserByEmailOrUsername(email: string, username: string): Promise<UserEntity | null> {
+    return this.userRepository.findByEmailOrUsername(email, username);
+  }
 }

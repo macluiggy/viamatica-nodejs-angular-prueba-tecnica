@@ -2,13 +2,30 @@
 import { Request, Response, NextFunction } from "express";
 import HttpResponse from "../http/HttpResponse";
 
-export const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
+const PostgreSQLErrorTranslator = (err: any) => {
+  const details = err?.detail;
+  return {
+    "23505": {
+      statusCode: 409,
+      message: `Resource already exists: ${details}`
+    },
+  }[err?.code];
+};
+
+export const errorHandler = (
+  err: any,
+  _req: Request,
+  res: Response,
+  _next: NextFunction
+) => {
   console.error(err);
-  
-  const statusCode = err.statusCode || 500;
+
+  const translatedError = PostgreSQLErrorTranslator(err);
+  const statusCode = err.statusCode || translatedError?.statusCode || 500;
+  const message = translatedError?.message || err.message || "Internal server error";
   const responseBody = new HttpResponse({
     statusCode: statusCode,
-    message: err.message,
+    message: message,
     data: null,
     isOk: false,
   });

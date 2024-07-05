@@ -7,6 +7,7 @@ import {
 } from "passport-jwt";
 // import { UserRepository } from "../repositories/UserRepository";
 import envVariables from "../../config/envVariables";
+import { UserRepository } from "../repositories/UserRepository";
 
 const opts: StrategyOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -16,15 +17,14 @@ const opts: StrategyOptions = {
 passport.use(
   new JwtStrategy(opts, async (jwt_payload, done) => {
     try {
-      // const userRepository = new UserRepository();
-      // const user = await userRepository.getUserById(jwt_payload.id);
-      // if (user) {
-      //   return done(null, user);
-      // } else {
-      //   return done(null, false);
-      // }
-      // throw new Error("Not implemented");
-      return done(null, jwt_payload);
+      const userRepository = new UserRepository();
+      const user = await userRepository.findByEmail(jwt_payload.email);
+
+      if (user) {
+        return done(null, user);
+      } else {
+        return done(null, false);
+      }
     } catch (error) {
       return done(error, false);
     }

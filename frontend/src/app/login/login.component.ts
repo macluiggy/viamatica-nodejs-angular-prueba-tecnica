@@ -36,8 +36,9 @@ export class LoginComponent implements OnInit {
 
   login() {
     const { email, password } = this.form;
+    const username = email;
 
-    this.authService.signIn({ email, password }).subscribe({
+    this.authService.signIn({ email, password, username }).subscribe({
       next: (response: any) => {
         const data = response.data;
         // TODO: change backend to return user object apart from token

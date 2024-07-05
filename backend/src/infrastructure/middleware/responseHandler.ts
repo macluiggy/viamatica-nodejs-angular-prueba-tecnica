@@ -22,7 +22,6 @@ export const responseHandler = (
     if (statusCode === 204) {
       statusCode = 200;
     }
-    console.log(statusCode);
     
     res.status(statusCode).json(responseBody);
   };
