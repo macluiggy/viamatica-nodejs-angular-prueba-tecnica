@@ -1,0 +1,48 @@
+<nav class="navbar navbar-expand navbar-dark bg-dark mb-3">
+  <a href="#" routerLink="home" class="navbar-brand">
+    <!-- Angular Template -->
+    {{ "nav.angular-template" | translate }}
+  </a>
+  <ul class="navbar-nav mr-auto" routerLinkActive="active">
+    <li class="nav-item">
+      <a href="/home" class="nav-link" routerLink="home">
+        {{ "nav.home" | translate }}
+      </a>
+    </li>
+    @if (showAdminBoard) {
+    <li class="nav-item">
+      <a href="/admin" class="nav-link" routerLink="admin"> Admin Board </a>
+    </li>
+    } @if (showModeratorBoard) {
+    <li class="nav-item">
+      <a href="/mod" class="nav-link" routerLink="mod" i18n>Moderator Board</a>
+    </li>
+    } @if (isLoggedIn) {
+    <li class="nav-item">
+      <a href="/user" class="nav-link" routerLink="user">User</a>
+    </li>
+    }
+  </ul>
+
+  @if (!isLoggedIn) {
+  <ul class="navbar-nav ml-auto">
+    <li class="nav-item">
+      <a href="/register" class="nav-link" routerLink="register">Sign Up</a>
+    </li>
+    <li class="nav-item">
+      <a href="/login" class="nav-link" routerLink="login">Login</a>
+    </li>
+  </ul>
+  } @else {
+  <ul class="navbar-nav ml-auto">
+    <li class="nav-item">
+      <a href="/profile" class="nav-link" routerLink="profile">{{
+        username
+      }}</a>
+    </li>
+    <li class="nav-item">
+      <a href routerLink="" class="nav-link" (click)="logout()">LogOut</a>
+    </li>
+  </ul>
+  }
+</nav>

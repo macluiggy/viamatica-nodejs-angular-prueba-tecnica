@@ -1,0 +1,43 @@
+{
+  "name": "backend",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "tsx --watch src/main.ts",
+    "typeorm": "typeorm-ts-node-commonjs",
+    "migration:generate": "npm run typeorm -- migration:generate ./src/infrastructure/database/migrations/$npm_config_name -d ./src/infrastructure/database/data-source.ts",
+    "migration:run": "npm run typeorm migration:run -d ./src/infrastructure/database/data-source.ts",
+    "migration:revert": "npm run typeorm migration:revert -d ./src/infrastructure/database/data-source.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "ts-node-dev": "^2.0.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/passport-jwt": "^4.0.1",
+    "bcrypt": "^5.1.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "dotnet": "^1.1.4",
+    "express": "^4.19.2",
+    "http-errors": "^2.0.0",
+    "http-status-codes": "^2.3.0",
+    "install": "^0.13.0",
+    "jsonwebtoken": "^9.0.2",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "pg": "^8.12.0",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.16.2",
+    "typeorm": "^0.3.20"
+  }
+}

@@ -1,0 +1,22 @@
+meta {
+  name: update user
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{base_url}}/users/64
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{TOKEN}}
+}
+
+body:json {
+  {
+    "username": "bruno updated",
+    "firstName": "bruno"
+  }
+}

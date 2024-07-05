@@ -1,0 +1,18 @@
+meta {
+  name: delete user
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{base_url}}/users/62
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username": "bruno updated",
+    "firstName": "bruno"
+  }
+}
