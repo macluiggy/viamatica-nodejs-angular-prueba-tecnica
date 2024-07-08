@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { UserService } from '../services/user/user.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { StorageService } from '../services/storage/storage.service';
 
 @Component({
   selector: 'app-user-maintenance',
@@ -15,7 +16,10 @@ export class UserMaintenanceComponent {
   usersFile: any;
   searchTimeout: any;
   statuses = ['active', 'blocked'];
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private storageService: StorageService
+  ) {}
 
   ngOnInit(): void {
     this.getUsers();
@@ -24,7 +28,7 @@ export class UserMaintenanceComponent {
   onStatusChange(userId: string, event: any) {
     const data = {
       status: event.target.value,
-    }
+    };
     this.userService.updateUserData(data, userId).subscribe({
       next: (response: any) => {
         this.getUsers();
@@ -36,6 +40,8 @@ export class UserMaintenanceComponent {
   }
 
   getUsers() {
+    const user = this.storageService.getUser();
+    if (!user) return;
     this.userService.getUsers().subscribe({
       next: (response: any) => {
         this.users = response.data;
