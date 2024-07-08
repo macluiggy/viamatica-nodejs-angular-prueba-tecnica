@@ -11,6 +11,7 @@ import { UserService } from '../services/user/user.service';
 export class UserMaintenanceComponent {
   users: any;
   usersFile: any;
+  searchTimeout: any;
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
@@ -26,6 +27,22 @@ export class UserMaintenanceComponent {
         console.error(error);
       },
     });
+  }
+
+  searchUsers(event: any) {
+    if (this.searchTimeout) {
+      clearTimeout(this.searchTimeout);
+    }
+    this.searchTimeout = setTimeout(() => {
+      this.userService.getUsers(event.target.value).subscribe({
+        next: (response: any) => {
+          this.users = response.data;
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
+    }, 500);
   }
 
   onFileChange(event: any) {

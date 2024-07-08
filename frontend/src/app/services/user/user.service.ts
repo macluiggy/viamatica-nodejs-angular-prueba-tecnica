@@ -7,7 +7,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root',
 })
 export class UserService {
-  private userApi = `${environment.apiUrl}/users`
+  private userApi = `${environment.apiUrl}/users`;
   constructor(private http: HttpClient) {}
 
   getPublicContent(): Observable<string> {
@@ -30,8 +30,8 @@ export class UserService {
     return this.http.get(`${this.userApi}/dashboard`);
   }
 
-  getUsers(): Observable<any> {
-    return this.http.get(`${this.userApi}`);
+  getUsers(criteria: string = ''): Observable<any> {
+    return this.http.get(`${this.userApi}?criteria=${criteria}`);
   }
 
   bulkCreateUsers(data: any): Observable<any> {
