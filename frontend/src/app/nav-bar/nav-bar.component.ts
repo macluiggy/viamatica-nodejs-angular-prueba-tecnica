@@ -22,14 +22,13 @@ export class NavBarComponent {
   constructor(
     private storageService: StorageService,
     private authService: AuthService
-  ) {
-    
-  }
+  ) {}
 
   ngOnInit(): void {
     this.authService.getIsLoggedIn().subscribe((loggedIn) => {
       this.isLoggedIn = loggedIn;
       this.username = this.storageService.getUser().username;
+      this.isAdmin = this.storageService.getUser().role === 'admin';
     });
     this.isLoggedIn = this.storageService.isLoggedIn();
 
@@ -38,6 +37,7 @@ export class NavBarComponent {
 
       this.username = user.username;
     }
+
   }
 
   logout(): void {
@@ -45,6 +45,8 @@ export class NavBarComponent {
       next: (res) => {
         this.storageService.clean();
         this.authService.setIsLoggedIn(false);
+
+        window.location.reload();
       },
       error: (err) => {
         console.log(err);

@@ -35,14 +35,14 @@
   </ul>
   } @else {
   <ul class="navbar-nav ml-auto">
-    @if (isAdmin) {
     <li class="nav-item">
       <a class="nav-link" routerLink="user-maintenance"> user maintenance </a>
     </li>
-    }
+    @if (isAdmin) {
     <li class="nav-item">
       <a class="nav-link" routerLink="dashboard"> dashboard </a>
     </li>
+    }
     <li class="nav-item">
       <a class="nav-link" routerLink="welcome"> welcome </a>
     </li>
