@@ -40,35 +40,13 @@ export class AuthService implements IAuthService {
       throw new createHttpError.NotFound("User not found");
     }
 
-    const activeSession = await this.sessionRepository.getOne({
-      where: {
-        userId: user.id,
-      },
-    });
-
-    if (activeSession) {
-      // throw new createHttpError.BadRequest(
-      //   "User already has an active session"
-      // );
+    if (await this.hasActiveSession(user.id)) {
+      throw new createHttpError.BadRequest(
+        "User already has an active session"
+      );
     }
 
-    const validPassword = await bcrypt.compare(password, user.password);
-    if (user.status === USER.STATUS.BLOCKED && user.failedAttempts >= USER.MAX_FAILED_LOGIN_ATTEMPTS) {
-      throw new createHttpError.BadRequest("User has been blocked due to multiple failed login attempts");
-    }
-    if (!validPassword) {
-      // update user's attempt count
-      user.failedAttempts = user.failedAttempts + 1;
-      if (user.failedAttempts >= USER.MAX_FAILED_LOGIN_ATTEMPTS) {
-        user.status = USER.STATUS.BLOCKED;
-        await this.userService.updateUser(user.id, user);
-        throw new createHttpError.BadRequest(
-          "User has been blocked due to multiple failed login attempts"
-        );
-      }
-      await this.userService.updateUser(user.id, user);
-      throw new createHttpError.BadRequest(`Invalid credentials you have ${USER.MAX_FAILED_LOGIN_ATTEMPTS - user.failedAttempts} attempts left`);
-    }
+    await this.handleFailedLoginAttempts(user, password);
 
     await this.loginHistoryRepository.save({
       action: LOGIN_HISTORY.ACTION.LOGIN,
@@ -77,17 +55,9 @@ export class AuthService implements IAuthService {
 
     const accessToken = this.generateToken(user);
     await this.sessionRepository.save({ userId: user.id, token: accessToken });
+
     delete user.password;
-    const result = { user, accessToken };
-
-    return result;
-  }
-
-  private generateToken(user: any): string {
-    
-    const payload = { ...user };
-    
-    return jwt.sign(payload, envVariables.jwtSecret, { expiresIn: "100D" });
+    return { user, accessToken };
   }
 
   async logout(userId: number): Promise<void> {
@@ -96,5 +66,55 @@ export class AuthService implements IAuthService {
       action: LOGIN_HISTORY.ACTION.LOGOUT,
       userId,
     });
+  }
+
+  private async hasActiveSession(userId: number): Promise<boolean> {
+    const activeSession = await this.sessionRepository.getOne({
+      where: { userId },
+    });
+    return !!activeSession;
+  }
+
+  private async handleFailedLoginAttempts(
+    user: any,
+    password: string
+  ): Promise<void> {
+    const validPassword = await bcrypt.compare(password, user.password);
+
+    if (
+      user.status === USER.STATUS.BLOCKED &&
+      user.failedAttempts >= USER.MAX_FAILED_LOGIN_ATTEMPTS
+    ) {
+      throw new createHttpError.BadRequest(
+        "User has been blocked due to multiple failed login attempts"
+      );
+    }
+
+    if (!validPassword) {
+      user.failedAttempts += 1;
+
+      if (user.failedAttempts >= USER.MAX_FAILED_LOGIN_ATTEMPTS) {
+        user.status = USER.STATUS.BLOCKED;
+        await this.userService.updateUser(user.id, user);
+        throw new createHttpError.BadRequest(
+          "User has been blocked due to multiple failed login attempts"
+        );
+      }
+
+      await this.userService.updateUser(user.id, user);
+      throw new createHttpError.BadRequest(
+        `Invalid credentials. You have ${
+          USER.MAX_FAILED_LOGIN_ATTEMPTS - user.failedAttempts
+        } attempts left`
+      );
+    }
+
+    user.failedAttempts = 0; // reset failed attempts on successful login
+    await this.userService.updateUser(user.id, user);
+  }
+
+  private generateToken(user: any): string {
+    const payload = { id: user.id, email: user.email, username: user.username };
+    return jwt.sign(payload, envVariables.jwtSecret, { expiresIn: "100D" });
   }
 }
