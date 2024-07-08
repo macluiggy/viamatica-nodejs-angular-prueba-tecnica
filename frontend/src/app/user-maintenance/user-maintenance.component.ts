@@ -10,6 +10,7 @@ import { UserService } from '../services/user/user.service';
 })
 export class UserMaintenanceComponent {
   users: any;
+  usersFile: any;
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
@@ -20,6 +21,27 @@ export class UserMaintenanceComponent {
     this.userService.getUsers().subscribe({
       next: (response: any) => {
         this.users = response.data;
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+  }
+
+  onFileChange(event: any) {
+    console.log(this.usersFile);
+    
+    this.usersFile = event.target.files[0];
+    console.log(this.usersFile);
+    
+  }
+
+  bulkCreateUsers() {
+    const formData = new FormData();
+    formData.append('file', this.usersFile);
+    this.userService.bulkCreateUsers(formData).subscribe({
+      next: (response: any) => {
+        this.getUsers();
       },
       error: (error) => {
         console.error(error);

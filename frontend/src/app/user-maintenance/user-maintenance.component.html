@@ -19,7 +19,8 @@
               type="file"
               class="form-control-file"
               id="fileUpload"
-              accept=".xlsx, .csv"
+              accept=".xlsx"
+              (change)="onFileChange($event)"
             />
           </div>
           <button type="submit" class="btn btn-primary">Cargar</button>

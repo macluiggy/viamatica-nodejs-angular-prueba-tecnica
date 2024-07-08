@@ -14,7 +14,8 @@ export class UserController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const criteria = req.query.criteria as string;
+      const criteria = (req.query.criteria as string) || "";
+
       const users = await this.userService.getUsers(criteria);
       res.success({
         data: users,

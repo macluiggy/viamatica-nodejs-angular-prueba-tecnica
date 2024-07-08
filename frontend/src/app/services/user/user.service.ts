@@ -33,4 +33,8 @@ export class UserService {
   getUsers(): Observable<any> {
     return this.http.get(`${this.userApi}`);
   }
+
+  bulkCreateUsers(data: any): Observable<any> {
+    return this.http.post(`${this.userApi}/bulk`, data);
+  }
 }
