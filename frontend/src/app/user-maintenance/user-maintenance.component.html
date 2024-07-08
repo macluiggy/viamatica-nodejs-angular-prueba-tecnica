@@ -12,7 +12,7 @@
           <h4>Descargar Template</h4>
           <a href="assets/users.xlsx" class="btn btn-secondary" download="template.xlsx">Descargar Template</a>
         </div>
-        <form>
+        <form (submit)="bulkCreateUsers($event)">
           <div class="form-group">
             <label for="fileUpload">Subir archivo (.xlsx)</label>
             <input
@@ -23,7 +23,7 @@
               (change)="onFileChange($event)"
             />
           </div>
-          <button type="submit" class="btn btn-primary">Cargar</button>
+          <button class="btn btn-primary" [disabled]="!usersFile">Cargar</button>
         </form>
       </div>
 

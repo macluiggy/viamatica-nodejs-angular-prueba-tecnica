@@ -29,14 +29,12 @@ export class UserMaintenanceComponent {
   }
 
   onFileChange(event: any) {
-    console.log(this.usersFile);
-    
     this.usersFile = event.target.files[0];
-    console.log(this.usersFile);
-    
   }
 
-  bulkCreateUsers() {
+  bulkCreateUsers(event: any) {
+    event.preventDefault();
+
     const formData = new FormData();
     formData.append('file', this.usersFile);
     this.userService.bulkCreateUsers(formData).subscribe({
