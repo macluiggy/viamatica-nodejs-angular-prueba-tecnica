@@ -57,7 +57,9 @@
               <td>{{ user.id }}</td>
               <td>{{ user.firstName }} {{ user.lastName }}</td>
               <td>{{ user.email }}</td>
-              <td>{{ user.status }}</td>
+              <select [value]="user.status" (change)="onStatusChange(user.id, $event)">
+                <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
+              </select>
               <td>{{ user.role }}</td>
             }
           </tbody>

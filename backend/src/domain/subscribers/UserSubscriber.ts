@@ -8,6 +8,7 @@ import {
 import { UserEntity } from "../entities/User";
 import { UserRepository } from "../../infrastructure/repositories/UserRepository";
 import * as bcrypt from "bcrypt";
+import { USER } from "../../config/constants";
 
 @EventSubscriber()
 export class UserSubscriber implements EntitySubscriberInterface<UserEntity> {
@@ -20,6 +21,12 @@ export class UserSubscriber implements EntitySubscriberInterface<UserEntity> {
   async beforeInsert(event: InsertEvent<UserEntity>) {
     await this.generateUniqueEmail(event.entity);
     await this.hashPassword(event.entity);
+  }
+
+  async beforeUpdate(event: UpdateEvent<UserEntity>) {
+    if (event.entity && event.entity.status === USER.STATUS.ACTIVE) {
+      event.entity.failedAttempts = 0;
+    }
   }
 
   private async generateUniqueEmail(user: UserEntity) {

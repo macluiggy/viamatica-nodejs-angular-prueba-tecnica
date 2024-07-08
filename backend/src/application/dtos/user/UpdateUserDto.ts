@@ -49,4 +49,7 @@ export class UpdateUserDto {
     message: "Identification must not contain the same number repeated 4 times",
   })
   identification: string;
+
+  @IsOptional()
+  status?: string;
 }

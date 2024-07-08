@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { UserService } from '../services/user/user.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-user-maintenance',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './user-maintenance.component.html',
   styleUrl: './user-maintenance.component.scss',
 })
@@ -12,10 +13,25 @@ export class UserMaintenanceComponent {
   users: any;
   usersFile: any;
   searchTimeout: any;
+  statuses = ['active', 'blocked'];
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
     this.getUsers();
+  }
+
+  onStatusChange(userId: string, event: any) {
+    const data = {
+      status: event.target.value,
+    }
+    this.userService.updateUserData(data, userId).subscribe({
+      next: (response: any) => {
+        this.getUsers();
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
   }
 
   getUsers() {
