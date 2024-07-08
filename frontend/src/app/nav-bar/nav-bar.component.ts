@@ -17,11 +17,14 @@ export class NavBarComponent {
   showAdminBoard = false;
   showModeratorBoard = false;
   username?: string;
+  isAdmin = this.storageService.getUser().role === 'admin';
 
   constructor(
     private storageService: StorageService,
     private authService: AuthService
-  ) {}
+  ) {
+    
+  }
 
   ngOnInit(): void {
     this.authService.getIsLoggedIn().subscribe((loggedIn) => {

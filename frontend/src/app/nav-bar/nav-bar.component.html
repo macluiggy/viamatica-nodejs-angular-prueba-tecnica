@@ -35,9 +35,11 @@
   </ul>
   } @else {
   <ul class="navbar-nav ml-auto">
+    @if (isAdmin) {
     <li class="nav-item">
       <a class="nav-link" routerLink="user-maintenance"> user maintenance </a>
     </li>
+    }
     <li class="nav-item">
       <a class="nav-link" routerLink="dashboard"> dashboard </a>
     </li>
@@ -47,6 +49,7 @@
     <li class="nav-item">
       <a class="nav-link" routerLink="user">{{ username }}</a>
     </li>
+    @if (isAdmin) {
     <li class="nav-item">
       <a
         href="/my-login-history"
@@ -56,6 +59,7 @@
         My Login History
       </a>
     </li>
+    }
     <li class="nav-item">
       <a href routerLink="" class="nav-link" (click)="logout()">LogOut</a>
     </li>
