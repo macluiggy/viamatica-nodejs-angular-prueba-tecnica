@@ -54,4 +54,9 @@ export class UserService implements IUserService {
       usersFailedLoginAttemptsCount
     };
   }
+
+  async bulkCreateUsers(users: CreateUserDto[]): Promise<CreateUserDto[]> {
+    return this.userRepository.bulkCreate(users);
+  }
+
 }

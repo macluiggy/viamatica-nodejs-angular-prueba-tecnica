@@ -20,6 +20,13 @@ router.get(
   (req, res, next) => userController.getDashBoardData(req, res, next)
 );
 
+// route for bulk user creation
+router.post(
+  "/users/bulk",
+  passport.authenticate("jwt", { session: false }),
+  (req, res, next) => userController.bulkCreateUsers(req, res, next)
+);
+
 router.get(
   "/users",
   passport.authenticate("jwt", { session: false }),

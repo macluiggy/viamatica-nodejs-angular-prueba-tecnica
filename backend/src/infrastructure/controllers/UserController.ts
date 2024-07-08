@@ -120,4 +120,22 @@ export class UserController {
       next(error);
     }
   }
+
+  async bulkCreateUsers(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const users = req.body;
+      const newUsers = await this.userService.bulkCreateUsers(users);
+      res.success({
+        data: newUsers,
+        message: "Users created",
+        statusCode: StatusCodes.CREATED,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }

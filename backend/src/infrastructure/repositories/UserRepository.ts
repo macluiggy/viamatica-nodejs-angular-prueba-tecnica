@@ -102,4 +102,8 @@ export class UserRepository {
 
     return +failedAttemptsCount.failedAttempts;
   }
+
+  async bulkCreate(users: CreateUserDto[]): Promise<CreateUserDto[]> {
+    return this.userRepository.save(users);
+  }
 }

@@ -1,0 +1,22 @@
+meta {
+  name: bulk create
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{base_url}}/users/bulk
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{TOKEN}}
+}
+
+body:json {
+  {
+    "username": "bruno updated",
+    "firstName": "bruno"
+  }
+}
