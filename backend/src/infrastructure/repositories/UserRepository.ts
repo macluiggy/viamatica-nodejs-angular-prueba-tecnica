@@ -1,5 +1,5 @@
 // src/infrastructure/repositories/UserRepository.ts
-import { Repository } from "typeorm";
+import { FindOneOptions, Repository } from "typeorm";
 import { AppDataSource } from "../database/data-source";
 import { UserEntity } from "../../domain/entities/User";
 import { CreateUserDto } from "../../application/dtos/user/CreateUserDto";
@@ -12,9 +12,10 @@ export class UserRepository {
     this.userRepository = AppDataSource.getRepository(UserEntity);
   }
 
-  async findAll(): Promise<UserEntity[]> {
+  async findAll(options: FindOneOptions<UserEntity>): Promise<UserEntity[]> {
     return this.userRepository.find({
       relations: ["session", "loginHistory"],
+      ...options,
     });
   }
 

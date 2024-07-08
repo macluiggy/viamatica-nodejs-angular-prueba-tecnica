@@ -14,7 +14,8 @@ export class UserController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const users = await this.userService.getUsers();
+      const criteria = req.query.criteria as string;
+      const users = await this.userService.getUsers(criteria);
       res.success({
         data: users,
         message: "Users found",
@@ -129,9 +130,9 @@ export class UserController {
   ): Promise<void> {
     try {
       const userFile = req.file;
-      
+
       const users = convertXlsxToJson(userFile);
-      
+
       const newUsers = await this.userService.bulkCreateUsers(users);
       res.success({
         data: newUsers,

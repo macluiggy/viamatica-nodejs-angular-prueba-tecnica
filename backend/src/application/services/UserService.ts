@@ -4,12 +4,20 @@ import { UserEntity } from "../../domain/entities/User";
 import { UserRepository } from "../../infrastructure/repositories/UserRepository";
 import { CreateUserDto } from "../dtos/user/CreateUserDto";
 import { SessionRepository } from "../../infrastructure/repositories/SessionRepository";
+import { FindOneOptions, ILike } from "typeorm";
 
 export class UserService implements IUserService {
   constructor(private userRepository: UserRepository) {}
 
-  async getUsers(): Promise<UserEntity[]> {
-    return this.userRepository.findAll();
+  async getUsers(criteria: string): Promise<UserEntity[]> {
+    const where = [
+      { firstName: ILike(`%${criteria}%`) },
+      { lastName: ILike(`%${criteria}%`) },
+      { email: ILike(`%${criteria}%`) },
+      { username: ILike(`%${criteria}%`) },
+    ];
+
+    return this.userRepository.findAll({ where });
   }
 
   async getUserById(id: number): Promise<UserEntity | null> {
@@ -45,18 +53,18 @@ export class UserService implements IUserService {
     const usersWithInactiveSessionCount =
       await this.userRepository.findUsersWithInactiveSessionsCount();
     const usersBlockedCount = await this.userRepository.findBlockedUsersCount();
-    const usersFailedLoginAttemptsCount = await this.userRepository.findAllUsersFailedLoginAttemptsCount();
+    const usersFailedLoginAttemptsCount =
+      await this.userRepository.findAllUsersFailedLoginAttemptsCount();
 
     return {
       usersWithActiveSessionCount,
       usersWithInactiveSessionCount,
       usersBlockedCount,
-      usersFailedLoginAttemptsCount
+      usersFailedLoginAttemptsCount,
     };
   }
 
   async bulkCreateUsers(users: CreateUserDto[]): Promise<CreateUserDto[]> {
     return this.userRepository.bulkCreate(users);
   }
-
 }
