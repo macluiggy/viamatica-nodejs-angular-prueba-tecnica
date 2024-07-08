@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { UserService } from '../services/user/user.service';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-user-maintenance',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './user-maintenance.component.html',
   styleUrl: './user-maintenance.component.scss',
 })

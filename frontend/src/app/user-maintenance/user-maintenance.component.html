@@ -57,9 +57,11 @@
               <td>{{ user.id }}</td>
               <td>{{ user.firstName }} {{ user.lastName }}</td>
               <td>{{ user.email }}</td>
-              <select [value]="user.status" (change)="onStatusChange(user.id, $event)">
-                <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
-              </select>
+              <td>
+                <select [ngModel]="user.status" (change)="onStatusChange(user.id, $event)">
+                  <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
+                </select>
+              </td>
               <td>{{ user.role }}</td>
             }
           </tbody>

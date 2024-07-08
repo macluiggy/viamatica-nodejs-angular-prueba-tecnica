@@ -7,13 +7,11 @@ import { UserService } from '../services/user/user.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss'
+  styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent {
-  dashboardData: any;
-  constructor(
-    private userService: UserService
-  ) {}
+  dashboardData: any = {};
+  constructor(private userService: UserService) {}
 
   ngOnInit(): void {
     this.userService.getDashboardData().subscribe({
@@ -22,7 +20,7 @@ export class DashboardComponent {
       },
       error: (error) => {
         console.error(error);
-      }
+      },
     });
   }
 }
