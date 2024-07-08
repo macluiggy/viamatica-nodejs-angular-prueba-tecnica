@@ -9,6 +9,7 @@ import { BoardUserComponent } from './board-user/board-user.component';
 import { authGuard } from './guards/auth.guard';
 import { MyLoginHistoryComponent } from './my-login-history/my-login-history.component';
 import { WelcomeComponent } from './welcome/welcome.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -17,6 +18,7 @@ export const routes: Routes = [
   { path: 'user', component: BoardUserComponent },
   { path: 'my-login-history', component: MyLoginHistoryComponent },
   { path: 'welcome', component: WelcomeComponent },
+  { path: 'dashboard', component: DashboardComponent },
   { path: '', redirectTo: 'register', pathMatch: 'full' },
   { path: '**', component: NotFoundComponent },
 ];

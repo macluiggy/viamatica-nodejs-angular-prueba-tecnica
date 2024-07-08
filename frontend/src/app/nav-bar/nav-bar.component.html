@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand navbar-dark bg-dark mb-3">
   <!-- <a href="#" routerLink="home" class="navbar-brand"> -->
-    <!-- Angular Template -->
-    <!-- {{ "nav.angular-template" | translate }} -->
+  <!-- Angular Template -->
+  <!-- {{ "nav.angular-template" | translate }} -->
   <!-- </a> -->
   <ul class="navbar-nav mr-auto" routerLinkActive="active">
     <!-- <li class="nav-item">
@@ -36,17 +36,20 @@
   } @else {
   <ul class="navbar-nav ml-auto">
     <li class="nav-item">
-      <a href="/profile" class="nav-link" routerLink="welcome">
-        welcome
-      </a>
+      <a class="nav-link" routerLink="dashboard"> dashboard </a>
     </li>
     <li class="nav-item">
-      <a href="/profile" class="nav-link" routerLink="user">{{
-        username
-      }}</a>
+      <a class="nav-link" routerLink="welcome"> welcome </a>
     </li>
     <li class="nav-item">
-      <a href="/my-login-history" class="nav-link" routerLink="my-login-history">
+      <a class="nav-link" routerLink="user">{{ username }}</a>
+    </li>
+    <li class="nav-item">
+      <a
+        href="/my-login-history"
+        class="nav-link"
+        routerLink="my-login-history"
+      >
         My Login History
       </a>
     </li>

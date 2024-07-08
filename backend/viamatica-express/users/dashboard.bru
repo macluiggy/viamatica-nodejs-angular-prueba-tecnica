@@ -1,0 +1,22 @@
+meta {
+  name: dashboard
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{base_url}}/users/dashboard
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{TOKEN}}
+}
+
+body:json {
+  {
+    "username": "bruno updated",
+    "firstName": "bruno"
+  }
+}

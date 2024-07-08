@@ -1,8 +1,9 @@
 // src/application/services/UserService.ts
-import { IUserService } from '../interfaces/IUserService';
-import { UserEntity } from '../../domain/entities/User';
-import { UserRepository } from '../../infrastructure/repositories/UserRepository';
-import { CreateUserDto } from '../dtos/user/CreateUserDto';
+import { IUserService } from "../interfaces/IUserService";
+import { UserEntity } from "../../domain/entities/User";
+import { UserRepository } from "../../infrastructure/repositories/UserRepository";
+import { CreateUserDto } from "../dtos/user/CreateUserDto";
+import { SessionRepository } from "../../infrastructure/repositories/SessionRepository";
 
 export class UserService implements IUserService {
   constructor(private userRepository: UserRepository) {}
@@ -31,7 +32,26 @@ export class UserService implements IUserService {
     return this.userRepository.findByEmail(email);
   }
 
-  getUserByEmailOrUsername(email: string, username: string): Promise<UserEntity | null> {
+  getUserByEmailOrUsername(
+    email: string,
+    username: string
+  ): Promise<UserEntity | null> {
     return this.userRepository.findByEmailOrUsername(email, username);
+  }
+
+  async getDashboardData(): Promise<any> {
+    const usersWithActiveSessionCount =
+      await this.userRepository.findUsersWithActiveSessionsCount();
+    const usersWithInactiveSessionCount =
+      await this.userRepository.findUsersWithInactiveSessionsCount();
+    const usersBlockedCount = await this.userRepository.findBlockedUsersCount();
+    const usersFailedLoginAttemptsCount = await this.userRepository.findAllUsersFailedLoginAttemptsCount();
+
+    return {
+      usersWithActiveSessionCount,
+      usersWithInactiveSessionCount,
+      usersBlockedCount,
+      usersFailedLoginAttemptsCount
+    };
   }
 }

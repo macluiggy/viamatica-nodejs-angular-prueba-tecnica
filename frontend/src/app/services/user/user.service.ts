@@ -25,4 +25,8 @@ export class UserService {
   getUserByUserId(userId: string): Observable<any> {
     return this.http.get(`${this.userApi}/${userId}`);
   }
+
+  getDashboardData(): Observable<any> {
+    return this.http.get(`${this.userApi}/dashboard`);
+  }
 }

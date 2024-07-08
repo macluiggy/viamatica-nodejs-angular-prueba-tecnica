@@ -103,4 +103,21 @@ export class UserController {
       next(error);
     }
   }
+
+  async getDashBoardData(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const data = await this.userService.getDashboardData();
+      res.success({
+        data: data,
+        message: "User found",
+        statusCode: StatusCodes.OK,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }

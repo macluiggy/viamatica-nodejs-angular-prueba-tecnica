@@ -1,1 +1,40 @@
-<p>dashboard works!</p>
+<div *ngIf="true" class="container mt-5">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h4>Indicadores de Usuarios</h4>
+        </div>
+        <div class="card-body">
+          <ul class="list-group">
+            <li class="list-group-item">
+              <strong>Usuarios con sesión activa:</strong> {{ dashboardData.usersWithActiveSessionCount }}
+            </li>
+            <li class="list-group-item">
+              <strong>Usuarios con sesión inactiva:</strong>
+              {{ dashboardData.usersWithInactiveSessionCount }}
+            </li>
+            <li class="list-group-item">
+              <strong>Usuarios bloqueados:</strong> {{ dashboardData.usersBlockedCount }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h4>Indicadores de Inicios de Sesión Fallidos</h4>
+        </div>
+        <div class="card-body">
+          <ul class="list-group">
+            <li class="list-group-item">
+              <strong>Total de inicios de sesión fallidos:</strong>
+              {{ dashboardData.usersFailedLoginAttemptsCount }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

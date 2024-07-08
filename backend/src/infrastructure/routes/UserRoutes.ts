@@ -15,6 +15,12 @@ const userService = new UserService(userRepository);
 const userController = new UserController(userService);
 
 router.get(
+  "/users/dashboard",
+  passport.authenticate("jwt", { session: false }),
+  (req, res, next) => userController.getDashBoardData(req, res, next)
+);
+
+router.get(
   "/users",
   passport.authenticate("jwt", { session: false }),
   (req, res, next) => userController.getUsers(req, res, next)

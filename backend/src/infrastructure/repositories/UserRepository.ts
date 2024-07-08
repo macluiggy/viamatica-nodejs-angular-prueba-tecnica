@@ -3,6 +3,7 @@ import { Repository } from "typeorm";
 import { AppDataSource } from "../database/data-source";
 import { UserEntity } from "../../domain/entities/User";
 import { CreateUserDto } from "../../application/dtos/user/CreateUserDto";
+import { USER } from "../../config/constants";
 
 export class UserRepository {
   private userRepository: Repository<UserEntity>;
@@ -48,7 +49,10 @@ export class UserRepository {
     });
   }
 
-  async findByEmailOrUsername(email: string, username: string): Promise<UserEntity | null> {
+  async findByEmailOrUsername(
+    email: string,
+    username: string
+  ): Promise<UserEntity | null> {
     return this.userRepository.findOne({
       where: [
         {
@@ -59,5 +63,43 @@ export class UserRepository {
         },
       ],
     });
+  }
+
+  async findUsersWithActiveSessionsCount(): Promise<number> {
+    const queryBulder = this.userRepository.createQueryBuilder("user");
+    const usersWithActiveSessionCount = await queryBulder
+      .innerJoin("user.session", "session")
+      .getCount();
+
+    return usersWithActiveSessionCount;
+  }
+
+  async findUsersWithInactiveSessionsCount(): Promise<number> {
+    const queryBulder = this.userRepository.createQueryBuilder("user");
+    const usersWithActiveSessionCount = await queryBulder
+      .leftJoin("user.session", "session")
+      .where("session.id IS NULL")
+      .getCount();
+
+    return usersWithActiveSessionCount;
+  }
+
+  async findBlockedUsersCount(): Promise<number> {
+    const queryBulder = this.userRepository.createQueryBuilder("user");
+    const blockedUsersCount = await queryBulder
+      .where("user.status = :status", { status: USER.STATUS.BLOCKED })
+      .getCount();
+
+    return blockedUsersCount;
+  }
+
+  async findAllUsersFailedLoginAttemptsCount(): Promise<number> {
+    const queryBulder = this.userRepository.createQueryBuilder("user");
+    // make a sum of all failed attempts
+    const failedAttemptsCount = await queryBulder
+      .select("SUM(user.failedAttempts)", "failedAttempts")
+      .getRawOne();
+
+    return +failedAttemptsCount.failedAttempts;
   }
 }
