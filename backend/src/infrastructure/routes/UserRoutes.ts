@@ -7,6 +7,10 @@ import passport from "../middleware/passport";
 import { validationMiddleware } from "../middleware/validationMiddleware";
 import { CreateUserDto } from "../../application/dtos/user/CreateUserDto";
 import { UpdateUserDto } from "../../application/dtos/user/UpdateUserDto";
+import multer from "multer";
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 const router = Router();
 
@@ -24,6 +28,7 @@ router.get(
 router.post(
   "/users/bulk",
   passport.authenticate("jwt", { session: false }),
+  upload.single("file"),
   (req, res, next) => userController.bulkCreateUsers(req, res, next)
 );
 

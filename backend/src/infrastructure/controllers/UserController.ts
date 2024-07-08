@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import { UserService } from "../../application/services/UserService";
 import createError from "http-errors";
 import { StatusCodes } from "http-status-codes";
+import { convertXlsxToJson } from "../utils/xlsxToJson";
 
 export class UserController {
   constructor(private userService: UserService) {}
@@ -127,7 +128,10 @@ export class UserController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const users = req.body;
+      const userFile = req.file;
+      
+      const users = convertXlsxToJson(userFile);
+      
       const newUsers = await this.userService.bulkCreateUsers(users);
       res.success({
         data: newUsers,
