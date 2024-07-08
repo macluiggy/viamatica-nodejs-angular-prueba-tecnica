@@ -1,21 +1,29 @@
 <div class="container mt-5">
   <div class="card">
-	<div class="card-header">
-	  <h3>Bienvenido, {{ 'user.firstName '}} {{ 'user.lastName' }}</h3>
-	</div>
-	<div class="card-body">
-	  <p><strong>Última sesión activa:</strong></p>
-	  <ul class="list-group">
-		<li class="list-group-item">
-		  <strong>Intentos de inicio de sesión fallidos:</strong> {{ 'user.lastSession.failedLoginAttempts' }}
-		</li>
-		<li class="list-group-item">
-		  <strong>Hora de inicio:</strong> {{' user.lastSession.startTime' | date:'short' }}
-		</li>
-		<li class="list-group-item">
-		  <strong>Hora de fin:</strong> {{' user.lastSession.endTime' | date:'short' }}
-		</li>
-	  </ul>
-	</div>
+    <div class="card-header">
+      <h3>Bienvenido, {{ user.firstName }} {{ user.lastName }}</h3>
+    </div>
+    <div class="card-body">
+      <p><strong>Información personal:</strong></p>
+      <ul class="list-group">
+        <li class="list-group-item">
+          <strong>Correo electrónico:</strong>
+          {{ user.email }}
+        </li>
+        <li class="list-group-item">
+          <strong>Número de identificación:</strong>
+          {{ user.identification }}
+        </li>
+      </ul>
+    </div>
+    <div class="card-body">
+      <p><strong>Última sesión activa:</strong></p>
+      <ul class="list-group">
+        <li class="list-group-item">
+          <strong>Intentos de inicio de sesión fallidos:</strong>
+          {{ user.failedAttempts }}
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
