@@ -1,0 +1,57 @@
+<p>user-maintenance works!</p>
+
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-header">
+      <h3>Mantenimiento de Usuario</h3>
+    </div>
+    <div class="card-body">
+      <!-- Cargar masiva de usuarios -->
+      <div class="mb-4">
+        <h4>Cargar masiva de usuarios</h4>
+        <form>
+          <div class="form-group">
+            <label for="fileUpload">Subir archivo (.xlsx o .csv)</label>
+            <input
+              type="file"
+              class="form-control-file"
+              id="fileUpload"
+              accept=".xlsx, .csv"
+            />
+          </div>
+          <button type="submit" class="btn btn-primary">Cargar</button>
+        </form>
+      </div>
+
+      <!-- Filtro de búsqueda -->
+      <div class="mb-4">
+        <h4>Buscar Usuarios</h4>
+        <input
+          type="text"
+          id="searchInput"
+          class="form-control"
+          placeholder="Buscar por nombre..."
+        />
+      </div>
+
+      <!-- Tabla de usuarios -->
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody id="userTable">
+            <!-- Las filas de usuarios se insertarán aquí mediante JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
