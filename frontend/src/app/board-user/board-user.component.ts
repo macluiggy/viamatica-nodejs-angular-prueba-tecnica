@@ -14,10 +14,9 @@ import { UserService } from '../services/user/user.service';
 })
 export class BoardUserComponent implements OnInit {
   form = {
-    email: '',
-    password: '',
+    firstName: '',
+    lastName: '',
     username: '',
-    fullName: '',
   };
   userId = '';
   isSuccessful = false;
@@ -41,10 +40,9 @@ export class BoardUserComponent implements OnInit {
 
     // put it in the form
     this.form = {
-      email: user.email,
-      password: user.password,
+      firstName: user.firstName,
+      lastName: user.lastName,
       username: user.username,
-      fullName: user.fullName,
     };
   }
 
