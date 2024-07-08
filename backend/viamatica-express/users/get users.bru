@@ -5,9 +5,13 @@ meta {
 }
 
 get {
-  url: {{base_url}}/users
+  url: {{base_url}}/users?criteria
   body: none
   auth: bearer
+}
+
+params:query {
+  criteria: 
 }
 
 auth:bearer {
