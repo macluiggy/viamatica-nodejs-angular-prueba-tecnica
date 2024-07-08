@@ -8,15 +8,15 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { BoardUserComponent } from './board-user/board-user.component';
 import { authGuard } from './guards/auth.guard';
 import { MyLoginHistoryComponent } from './my-login-history/my-login-history.component';
+import { WelcomeComponent } from './welcome/welcome.component';
 
 export const routes: Routes = [
-  { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'profile', component: ProfileComponent, canActivate: [authGuard]},
+  { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
   { path: 'register', component: RegisterComponent },
-  { path: 'admin', component: BoardAdminComponent },
   { path: 'user', component: BoardUserComponent },
   { path: 'my-login-history', component: MyLoginHistoryComponent },
+  { path: 'welcome', component: WelcomeComponent },
   { path: '', redirectTo: 'register', pathMatch: 'full' },
   { path: '**', component: NotFoundComponent },
 ];

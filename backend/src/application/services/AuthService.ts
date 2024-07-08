@@ -47,9 +47,9 @@ export class AuthService implements IAuthService {
     });
 
     if (activeSession) {
-      throw new createHttpError.BadRequest(
-        "User already has an active session"
-      );
+      // throw new createHttpError.BadRequest(
+      //   "User already has an active session"
+      // );
     }
 
     const validPassword = await bcrypt.compare(password, user.password);
@@ -85,7 +85,7 @@ export class AuthService implements IAuthService {
 
   private generateToken(user: any): string {
     
-    const payload = { id: user.id, email: user.email, role: user.role };
+    const payload = { ...user };
     
     return jwt.sign(payload, envVariables.jwtSecret, { expiresIn: "100D" });
   }
