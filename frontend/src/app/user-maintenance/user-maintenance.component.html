@@ -1,4 +1,3 @@
-<p>user-maintenance works!</p>
 
 <div class="container mt-5">
   <div class="card">
@@ -30,7 +29,7 @@
           type="text"
           id="searchInput"
           class="form-control"
-          placeholder="Buscar por nombre..."
+          placeholder="Buscar"
         />
       </div>
 
@@ -46,7 +45,13 @@
             </tr>
           </thead>
           <tbody id="userTable">
-            <!-- Las filas de usuarios se insertarán aquí mediante JavaScript -->
+            @for (user of users; track $index) {
+            <tr>
+              <td>{{ user.id }}</td>
+              <td>{{ user.firstName }} {{ user.lastName }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.status }}</td>
+            }
           </tbody>
         </table>
       </div>

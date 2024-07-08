@@ -13,7 +13,9 @@ export class UserRepository {
   }
 
   async findAll(): Promise<UserEntity[]> {
-    return this.userRepository.find();
+    return this.userRepository.find({
+      relations: ["session", "loginHistory"],
+    });
   }
 
   async findById(id: number): Promise<UserEntity | null> {
