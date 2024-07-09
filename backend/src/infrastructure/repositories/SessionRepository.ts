@@ -29,10 +29,10 @@ export class SessionRepository {
   async delete({ userId }: { userId: number }): Promise<void> {
     const lastSession = await this.sessionRepository.findOne({
       where: { userId, deletedAt: null },
-      order: { createdAt: "DESC" },
+      order: { id: "DESC" },
     });
     if (lastSession) {
-      lastSession.deletedAt = new Date();
+      lastSession.deletedAt = new Date(new Date().toUTCString());
       await this.sessionRepository.save(lastSession);
     }
   }

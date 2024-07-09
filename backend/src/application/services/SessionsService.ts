@@ -13,6 +13,7 @@ export class SessionsService {
     return this.sessionRepository.findAll({
       relations: ["user"],
       withDeleted: true,
+      order: { createdAt: "DESC" },
     });
   }
 }
