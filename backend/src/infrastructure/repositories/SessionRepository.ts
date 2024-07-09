@@ -10,7 +10,9 @@ export class SessionRepository {
     this.sessionRepository = AppDataSource.getRepository(SessionEntity);
   }
 
-  async findAll(options?: FindOneOptions<SessionEntity>): Promise<SessionEntity[]> {
+  async findAll(
+    options?: FindOneOptions<SessionEntity>
+  ): Promise<SessionEntity[]> {
     return this.sessionRepository.find(options);
   }
 
@@ -25,6 +27,13 @@ export class SessionRepository {
   }
 
   async delete({ userId }: { userId: number }): Promise<void> {
-    await this.sessionRepository.delete({ userId });
+    const lastSession = await this.sessionRepository.findOne({
+      where: { userId, deletedAt: null },
+      order: { createdAt: "DESC" },
+    });
+    if (lastSession) {
+      lastSession.deletedAt = new Date();
+      await this.sessionRepository.save(lastSession);
+    }
   }
 }

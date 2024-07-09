@@ -72,6 +72,7 @@ export class AuthService implements IAuthService {
     const activeSession = await this.sessionRepository.getOne({
       where: { userId },
     });
+
     return !!activeSession;
   }
 
