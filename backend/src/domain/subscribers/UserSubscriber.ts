@@ -19,6 +19,8 @@ export class UserSubscriber implements EntitySubscriberInterface<UserEntity> {
   }
 
   async beforeInsert(event: InsertEvent<UserEntity>) {
+    // console.log("beforeInsert", event.entity);
+
     await this.generateUniqueEmail(event.entity);
     await this.hashPassword(event.entity);
   }

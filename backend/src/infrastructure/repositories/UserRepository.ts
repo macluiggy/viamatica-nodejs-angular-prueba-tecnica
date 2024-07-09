@@ -107,6 +107,11 @@ export class UserRepository {
   }
 
   async bulkCreate(users: CreateUserDto[]): Promise<CreateUserDto[]> {
-    return this.userRepository.save(users);
+    const createdUsers = [];
+    for (const user of users) {
+      createdUsers.push(await this.save(user));
+    }
+
+    return createdUsers;
   }
 }

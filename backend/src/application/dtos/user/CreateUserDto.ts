@@ -8,6 +8,7 @@ import {
   MinLength,
 } from "class-validator";
 import { IsUsernameAlreadyExist } from "../validators/IsUsernameAlreadyExistConstraint";
+import { IsIdentificationAlreadyExist } from "../validators/IsIdentificationAlreadyExistConstraint";
 export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
@@ -51,6 +52,7 @@ export class CreateUserDto {
   @Matches(/^(?!.*(\d)\1{3})/, {
     message: "Identification must not contain the same number repeated 4 times",
   })
+  @IsIdentificationAlreadyExist({ message: "Identification already exists" })
   identification: string;
 
   @IsOptional()

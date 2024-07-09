@@ -148,31 +148,23 @@ export class UserController {
         type: CreateUserDto,
         body: users,
       });
-      console.log("validatedData", validatedData, "errors", errors);
 
-      const newUsers = await this.userService.bulkCreateUsers(validatedData);
+      await this.userService.bulkCreateUsers(validatedData);
+      const filePath = path.join(process.cwd(), 'result.txt');
       if (errors.length > 0) {
         const errorMessages = errors.map(error => error.message).join('\n');
-        const filePath = path.join(process.cwd(), 'errors.txt');
-        
         fs.writeFileSync(filePath, errorMessages);
-
-        res.download(filePath, 'errors.txt', (err) => {
-          if (err) {
-            next(err);
-          } else {
-            fs.unlinkSync(filePath); // Eliminar el archivo después de enviarlo
-          }
-        });
       } else {
-        // const newUsers = await this.userService.bulkCreateUsers(users);
-        res.success({
-          // data: newUsers,
-          data: newUsers,
-          message: "Users created",
-          statusCode: StatusCodes.CREATED,
-        });
+        fs.writeFileSync(filePath, 'All users were created successfully');
       }
+      
+      res.download(filePath, 'result.txt', (err) => {
+        if (err) {
+          next(err);
+        } else {
+          fs.unlinkSync(filePath); // Eliminar el archivo después de enviarlo
+        }
+      });
     } catch (error) {
       next(error);
     }
