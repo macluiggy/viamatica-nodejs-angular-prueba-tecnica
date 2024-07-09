@@ -50,4 +50,7 @@ export class CreateUserDto {
     message: "Identification must not contain the same number repeated 4 times",
   })
   identification: string;
+
+  @IsOptional()
+  role?: string;
 }

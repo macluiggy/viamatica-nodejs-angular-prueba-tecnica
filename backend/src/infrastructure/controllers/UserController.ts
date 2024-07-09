@@ -3,6 +3,8 @@ import { UserService } from "../../application/services/UserService";
 import createError from "http-errors";
 import { StatusCodes } from "http-status-codes";
 import { convertXlsxToJson } from "../utils/xlsxToJson";
+import path from "path";
+import fs from "fs";
 
 export class UserController {
   constructor(private userService: UserService) {}
@@ -132,13 +134,37 @@ export class UserController {
         throw new createError.BadRequest("No file uploaded");
       }
 
-      const users = convertXlsxToJson(userFile);
-      const newUsers = await this.userService.bulkCreateUsers(users);
-      res.success({
-        data: newUsers,
-        message: "Users created",
-        statusCode: StatusCodes.CREATED,
+      let users = convertXlsxToJson(userFile);
+      users = users.map((user) => {
+        user.identification = user.identification
+          ? user.identification.toString()
+          : null;
+        return user;
       });
+
+      const { success: newUsers, errors } =
+        await this.userService.bulkCreateUsers(users);
+      if (errors.length > 0) {
+        const errorMessages = errors.map((error) => error.message).join("\n");
+        const filePath = path.join(process.cwd(), "errors.txt");
+
+        fs.writeFileSync(filePath, errorMessages);
+
+        res.download(filePath, "errors.txt", (err) => {
+          if (err) {
+            next(err);
+          } else {
+            fs.unlinkSync(filePath); // Eliminar el archivo después de enviarlo
+          }
+        });
+      } else {
+        res.success({
+          // data: newUsers,
+          data: newUsers,
+          message: "Users created",
+          statusCode: StatusCodes.CREATED,
+        });
+      }
     } catch (error) {
       next(error);
     }
