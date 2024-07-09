@@ -21,7 +21,11 @@ export class CreateUserDto {
   @Matches(/[A-Z]/, {
     message: "Username must contain at least one uppercase letter",
   })
-  @IsUsernameAlreadyExist({ message: "Username already exists" })
+  @IsUsernameAlreadyExist({
+    message(validationArguments) {
+      return `Username ${validationArguments.value} already exists`;
+    },
+  })
   username: string;
 
   @IsString()
@@ -52,7 +56,11 @@ export class CreateUserDto {
   @Matches(/^(?!.*(\d)\1{3})/, {
     message: "Identification must not contain the same number repeated 4 times",
   })
-  @IsIdentificationAlreadyExist({ message: "Identification already exists" })
+  @IsIdentificationAlreadyExist({
+    message(validationArguments) {
+      return `Identification ${validationArguments.value} already`;
+    },
+  })
   identification: string;
 
   @IsOptional()
