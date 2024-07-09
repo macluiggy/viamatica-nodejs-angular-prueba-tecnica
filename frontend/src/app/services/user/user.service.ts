@@ -35,6 +35,8 @@ export class UserService {
   }
 
   bulkCreateUsers(data: any): Observable<any> {
-    return this.http.post(`${this.userApi}/bulk`, data);
+    return this.http.post(`${this.userApi}/bulk`, data, {
+      responseType: 'blob',
+    });
   }
 }
