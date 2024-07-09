@@ -12,7 +12,6 @@ import { StorageService } from '../services/storage/storage.service';
 export class WelcomeComponent {
   user = this.storageService.getUser();
   constructor(private storageService: StorageService) {
-    console.log(this.user);
     
   }
 }

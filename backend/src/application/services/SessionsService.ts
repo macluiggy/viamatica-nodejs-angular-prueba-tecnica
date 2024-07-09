@@ -10,6 +10,9 @@ export class SessionsService {
   constructor(private sessionRepository: SessionRepository) {}
 
   async findAllSessions(): Promise<UserEntity[]> {
-    return this.sessionRepository.findAll();
+    return this.sessionRepository.findAll({
+      relations: ["user"],
+      withDeleted: true,
+    });
   }
 }

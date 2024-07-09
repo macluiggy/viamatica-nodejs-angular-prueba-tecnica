@@ -37,4 +37,29 @@
       </div>
     </div>
   </div>
+
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-md-12">
+        <h3>Sesiones de Usuarios</h3>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>ID de Sesión</th>
+              <th>Usuario</th>
+              <th>Fecha de Inicio</th>
+              <th>Fecha de Fin</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let session of usersSessions">
+              <td>{{ session.id }}</td>
+              <td>{{ session.user.username }}</td>
+              <td>{{ session.createdAt | timezone: -5 }}</td>
+              <td>{{ session.deletedAt | timezone: -5 }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 </div>

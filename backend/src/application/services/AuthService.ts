@@ -110,7 +110,6 @@ export class AuthService implements IAuthService {
       );
     }
 
-    user.failedAttempts = 0; // reset failed attempts on successful login
     await this.userService.updateUser(user.id, user);
   }
 
