@@ -10,6 +10,10 @@ export class SessionRepository {
     this.sessionRepository = AppDataSource.getRepository(SessionEntity);
   }
 
+  async findAll(options?: FindOneOptions<SessionEntity>): Promise<SessionEntity[]> {
+    return this.sessionRepository.find(options);
+  }
+
   async getOne(
     options: FindOneOptions<SessionEntity>
   ): Promise<SessionEntity | null> {

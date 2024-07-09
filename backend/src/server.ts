@@ -4,6 +4,7 @@ import { AppDataSource } from "./infrastructure/database/data-source";
 import { API_VERSION } from "./config/constants";
 import userRoutes from "./infrastructure/routes/UserRoutes";
 import authRoutes from "./infrastructure/routes/AuthRoutes";
+import sessionRoutes from "./infrastructure/routes/SessionsRoutes";
 import loginHistoryRoutes from "./infrastructure/routes/LoginHistoryRoutes";
 import { errorHandler } from "./infrastructure/middleware/errorHandler";
 import { responseHandler } from "./infrastructure/middleware/responseHandler";
@@ -38,6 +39,7 @@ app.use(passport.initialize());
     app.use(`/api/${API_VERSION}`, userRoutes);
     app.use(`/api/${API_VERSION}`, authRoutes);
     app.use(`/api/${API_VERSION}`, loginHistoryRoutes);
+    app.use(`/api/${API_VERSION}`, sessionRoutes);
     app.use(errorHandler);
 
     app.listen(3000, () => {
