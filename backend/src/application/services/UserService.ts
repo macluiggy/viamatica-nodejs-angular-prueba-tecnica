@@ -17,7 +17,7 @@ export class UserService implements IUserService {
       { username: ILike(`%${criteria}%`) },
     ];
 
-    return this.userRepository.findAll({ where });
+    return this.userRepository.findAll({ where, order: { id: "DESC" } });
   }
 
   async getUserById(id: number): Promise<UserEntity | null> {
