@@ -1,4 +1,3 @@
-// src/infrastructure/controllers/UserController.ts
 import { Request, Response, NextFunction } from "express";
 import { UserService } from "../../application/services/UserService";
 import createError from "http-errors";
@@ -15,7 +14,6 @@ export class UserController {
   ): Promise<void> {
     try {
       const criteria = (req.query.criteria as string) || "";
-
       const users = await this.userService.getUsers(criteria);
       res.success({
         data: users,
@@ -116,7 +114,7 @@ export class UserController {
       const data = await this.userService.getDashboardData();
       res.success({
         data: data,
-        message: "User found",
+        message: "Dashboard data retrieved",
         statusCode: StatusCodes.OK,
       });
     } catch (error) {
@@ -131,9 +129,11 @@ export class UserController {
   ): Promise<void> {
     try {
       const userFile = req.file;
+      if (!userFile) {
+        throw new createError.BadRequest("No file uploaded");
+      }
 
       const users = convertXlsxToJson(userFile);
-
       const newUsers = await this.userService.bulkCreateUsers(users);
       res.success({
         data: newUsers,
