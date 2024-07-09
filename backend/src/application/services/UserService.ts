@@ -64,7 +64,7 @@ export class UserService implements IUserService {
     };
   }
 
-  async bulkCreateUsers(users: CreateUserDto[]): Promise<any> {
+  async bulkCreateUsers(users: CreateUserDto[]): Promise<CreateUserDto[]> {
     return this.userRepository.bulkCreate(users);
   }
 }

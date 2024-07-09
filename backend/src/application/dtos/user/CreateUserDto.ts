@@ -7,6 +7,7 @@ import {
   MaxLength,
   MinLength,
 } from "class-validator";
+import { IsUsernameAlreadyExist } from "../validators/IsUsernameAlreadyExistConstraint";
 export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
@@ -19,6 +20,7 @@ export class CreateUserDto {
   @Matches(/[A-Z]/, {
     message: "Username must contain at least one uppercase letter",
   })
+  @IsUsernameAlreadyExist({ message: "Username already exists" })
   username: string;
 
   @IsString()

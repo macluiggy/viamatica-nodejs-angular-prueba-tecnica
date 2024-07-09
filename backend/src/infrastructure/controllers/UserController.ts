@@ -3,6 +3,8 @@ import { UserService } from "../../application/services/UserService";
 import createError from "http-errors";
 import { StatusCodes } from "http-status-codes";
 import { convertXlsxToJson } from "../utils/xlsxToJson";
+import { bulkValidateDto } from "../utils/validateDto";
+import { CreateUserDto } from "../../application/dtos/user/CreateUserDto";
 import path from "path";
 import fs from "fs";
 
@@ -142,15 +144,20 @@ export class UserController {
         return user;
       });
 
-      const { success: newUsers, errors } =
-        await this.userService.bulkCreateUsers(users);
-      if (errors.length > 0) {
-        const errorMessages = errors.map((error) => error.message).join("\n");
-        const filePath = path.join(process.cwd(), "errors.txt");
+      const { validatedData, errors } = await bulkValidateDto({
+        type: CreateUserDto,
+        body: users,
+      });
+      console.log("validatedData", validatedData, "errors", errors);
 
+      const newUsers = await this.userService.bulkCreateUsers(validatedData);
+      if (errors.length > 0) {
+        const errorMessages = errors.map(error => error.message).join('\n');
+        const filePath = path.join(process.cwd(), 'errors.txt');
+        
         fs.writeFileSync(filePath, errorMessages);
 
-        res.download(filePath, "errors.txt", (err) => {
+        res.download(filePath, 'errors.txt', (err) => {
           if (err) {
             next(err);
           } else {
@@ -158,6 +165,7 @@ export class UserController {
           }
         });
       } else {
+        // const newUsers = await this.userService.bulkCreateUsers(users);
         res.success({
           // data: newUsers,
           data: newUsers,
