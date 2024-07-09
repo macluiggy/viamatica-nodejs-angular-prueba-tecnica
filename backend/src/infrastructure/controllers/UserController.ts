@@ -17,7 +17,6 @@ export class UserController {
       const users = await this.userService.getUsers(criteria);
       res.success({
         data: users,
-        message: "Users found",
         statusCode: StatusCodes.OK,
       });
     } catch (error) {

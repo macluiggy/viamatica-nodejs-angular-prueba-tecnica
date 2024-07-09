@@ -11,7 +11,7 @@ export const responseHandler = (
   res.success = ({
     data = {},
     statusCode = 200,
-    message = "Success",
+    message = "OK",
   }: SuccessParams) => {
     const responseBody = new HttpResponse({
       statusCode: statusCode,
